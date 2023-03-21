@@ -1,6 +1,12 @@
 import { Header } from './components/Header';
-import './styles/global.css'
+import { Task } from './components/Task.tsx';
+import './styles/global.css';
 
 export function App() {
-  return <Header />;
+  return (
+    <>
+      <Header />
+      <Task />
+    </>
+  );
 }
