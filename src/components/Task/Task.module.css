@@ -26,4 +26,7 @@
   font-weight: bolder;
 }
 
-
+.container {
+  display: flex;
+  justify-content: space-evenly;
+}
