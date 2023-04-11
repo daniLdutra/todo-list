@@ -1,18 +1,32 @@
 import { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { List } from '../List';
 import styles from './Task.module.css';
 
+export interface ITask {
+    id: string;
+    task: string;
+}
+
 export function Task() {
-  const [tasks, setTask] = useState<string[]>([]);
-  const [tasksCreated, setTasksCreated] = useState<number>(0);
-  const [completedTask, setCompletedTask] = useState<number>(0);
+  const [tasks, setTask] = useState<ITask[]>([]);
+  const [tasksCreated, setTasksCreated] = useState(0);
+  const [completedTask, setCompletedTask] = useState(0);
 
   const handleCreateTask = (event: any) => {
     event.preventDefault();
     const newTask = event.target.newTask.value;
 
-    setTask([...tasks, newTask]);
+    setTask([...tasks, {task: newTask, id: uuidv4()}]);
     setTasksCreated(tasks.length + 1);
+  };
+
+  const deleteTask = ({ id }: ITask) => {
+    const tasksWithoutTaskOne = tasks.filter((task) => {
+      return task.id !== id;
+    });
+
+    setTask(tasksWithoutTaskOne);
   };
 
   return (
@@ -24,11 +38,13 @@ export function Task() {
         </button>
       </form>
       {tasks.map((task) => {
-        return <List task={task} />;
+        return (
+          <List key={task.id} task={task} onDeleteTask={deleteTask} />
+        );
       })}
       <div className={styles.container}>
         <h4>Tarefas criadas: {tasksCreated}</h4>
-        <h4>Tarefas concluídas: 0</h4>
+        <h4>Tarefas concluídas: {completedTask}</h4>
       </div>
     </>
   );

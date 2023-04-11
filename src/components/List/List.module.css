@@ -6,7 +6,7 @@
 
 .li {
   display: flex;
-  background-color: var(--danger);
+  background-color: var(--gray-100);
   border-radius: 8px;
   padding: 1rem;
   box-sizing: border-box;
@@ -28,4 +28,16 @@
 .taskText {
   flex: 1;
   margin-left: 0.5rem;
+}
+
+.button {
+  background: transparent;
+  border: 0;
+  color: var(--gray-400);
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+
+  border-radius: 2px;
 }
