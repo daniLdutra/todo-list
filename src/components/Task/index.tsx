@@ -4,21 +4,27 @@ import { List } from '../List';
 import styles from './Task.module.css';
 
 export interface ITask {
-    id: string;
-    task: string;
+  id: string;
+  taskName: string;
+  isCompleted: boolean;
 }
 
 export function Task() {
-  const [tasks, setTask] = useState<ITask[]>([]);
-  const [tasksCreated, setTasksCreated] = useState(0);
-  const [completedTask, setCompletedTask] = useState(0);
+  const [tasks, setTasks] = useState<ITask[]>([]);
+  const [newTask, setNewTask] = useState('');
 
   const handleCreateTask = (event: any) => {
     event.preventDefault();
-    const newTask = event.target.newTask.value;
 
-    setTask([...tasks, {task: newTask, id: uuidv4()}]);
-    setTasksCreated(tasks.length + 1);
+    setTasks([
+      ...tasks,
+      { id: uuidv4(), isCompleted: false, taskName: newTask },
+    ]);
+    setNewTask('')
+  };
+
+  const handleNewTask = (event: any) => {
+    setNewTask(event.target.value);
   };
 
   const deleteTask = ({ id }: ITask) => {
@@ -26,25 +32,31 @@ export function Task() {
       return task.id !== id;
     });
 
-    setTask(tasksWithoutTaskOne);
+    setTasks(tasksWithoutTaskOne);
   };
 
   return (
     <>
       <form className={styles.form} onSubmit={handleCreateTask}>
-        <input type="text" name="newTask" className={styles.input}></input>
+        <input
+          type="text"
+          value={newTask}
+          onChange={handleNewTask}
+          className={styles.input}
+        ></input>
         <button className={styles.button} type="submit">
           Criar
         </button>
       </form>
       {tasks.map((task) => {
-        return (
-          <List key={task.id} task={task} onDeleteTask={deleteTask} />
-        );
+        return <List key={task.id} task={task} onDeleteTask={deleteTask} />;
       })}
       <div className={styles.container}>
-        <h4>Tarefas criadas: {tasksCreated}</h4>
-        <h4>Tarefas concluídas: {completedTask}</h4>
+        <h4>Tarefas criadas: {tasks.length}</h4>
+        <h4>
+          Tarefas concluídas: {tasks.filter((task) => task.isCompleted).length}{' '}
+          de {tasks.length}
+        </h4>
       </div>
     </>
   );

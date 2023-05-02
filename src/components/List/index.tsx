@@ -39,7 +39,7 @@ export function List({ task, onDeleteTask }: IProps) {
                 color: 'black',
               }}
             >
-              {task.task}
+              {task.taskName}
             </span>
             <button
               title="Deletar Task"
