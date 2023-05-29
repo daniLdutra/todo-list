@@ -20,11 +20,24 @@ export function Task() {
       ...tasks,
       { id: uuidv4(), isCompleted: false, taskName: newTask },
     ]);
-    setNewTask('')
+    setNewTask('');
   };
 
   const handleNewTask = (event: any) => {
     setNewTask(event.target.value);
+  };
+
+  const handleTaskCompletion = ({ id }: ITask) => {
+    const taskCompleted = tasks.map((task) => {
+      if (task.id === id) {
+        return {
+          ...task,
+          isCompleted: !task.isCompleted,
+        };
+      }
+      return task;
+    });
+    setTasks(taskCompleted);
   };
 
   const deleteTask = ({ id }: ITask) => {
@@ -49,7 +62,14 @@ export function Task() {
         </button>
       </form>
       {tasks.map((task) => {
-        return <List key={task.id} task={task} onDeleteTask={deleteTask} />;
+        return (
+          <List
+            key={task.id}
+            task={task}
+            onDeleteTask={deleteTask}
+            onCompleted={handleTaskCompletion}
+          />
+        );
       })}
       <div className={styles.container}>
         <h4>Tarefas criadas: {tasks.length}</h4>

@@ -1,21 +1,17 @@
 import { Trash } from 'phosphor-react';
-import { useState } from 'react';
 import { ITask } from '../Task';
 import styles from './List.module.css';
 
 interface IProps {
   onDeleteTask: (task: ITask) => void;
-  task: ITask
+  task: ITask;
+  onCompleted: (id: ITask) => void;
 }
 
-export function List({ task, onDeleteTask }: IProps) {
-  const [isChecked, setIsChecked] = useState(false);
-
+export function List({ task, onDeleteTask, onCompleted }: IProps) {
   const handleCheckTask = () => {
-    setIsChecked(!isChecked);
+    onCompleted(task);
   };
-
-  const textDecoration = isChecked ? 'line-through' : 'none';
 
   const handleDeleteTask = () => {
     onDeleteTask(task);
@@ -29,13 +25,13 @@ export function List({ task, onDeleteTask }: IProps) {
             <input
               type="checkbox"
               id="checkbox1"
-              checked={isChecked}
+              checked={task.isCompleted}
               className={styles.checkbox}
               onChange={handleCheckTask}
             />
             <span
               style={{
-                textDecorationLine: isChecked ? 'line-through' : 'none',
+                textDecorationLine: task.isCompleted ? 'line-through' : 'none',
                 color: 'black',
               }}
             >
