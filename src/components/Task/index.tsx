@@ -61,6 +61,13 @@ export function Task() {
           Criar
         </button>
       </form>
+      <div className={styles.container}>
+        <h4>Tarefas criadas: {tasks.length}</h4>
+        <h4>
+          Tarefas concluídas: {tasks.filter((task) => task.isCompleted).length}{' '}
+          de {tasks.length}
+        </h4>
+      </div>
       {tasks.map((task) => {
         return (
           <List
@@ -71,13 +78,6 @@ export function Task() {
           />
         );
       })}
-      <div className={styles.container}>
-        <h4>Tarefas criadas: {tasks.length}</h4>
-        <h4>
-          Tarefas concluídas: {tasks.filter((task) => task.isCompleted).length}{' '}
-          de {tasks.length}
-        </h4>
-      </div>
     </>
   );
 }
