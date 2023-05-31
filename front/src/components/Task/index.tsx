@@ -42,12 +42,10 @@ export function Task() {
     setTasks(taskCompleted);
   };
 
-  const deleteTask = ({ id }: ITask) => {
-    const tasksWithoutTaskOne = tasks.filter((task) => {
-      return task.id !== id;
-    });
-
-    setTasks(tasksWithoutTaskOne);
+  const deleteTask = async ({ id }: ITask) => {
+    const tasksWithoutTaskOne = await axios.delete(`http://localhost:3001/todo/${id}`);
+    
+    setTasks(tasksWithoutTaskOne.data);
   };
 
   useEffect(() => {
