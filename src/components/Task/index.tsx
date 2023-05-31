@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { List } from '../List';
 import styles from './Task.module.css';
+import axios from 'axios';
 
 export interface ITask {
   id: string;
@@ -13,13 +14,14 @@ export function Task() {
   const [tasks, setTasks] = useState<ITask[]>([]);
   const [newTask, setNewTask] = useState('');
 
-  const handleCreateTask = (event: any) => {
+  const handleCreateTask = async (event: any) => {
     event.preventDefault();
 
-    setTasks([
-      ...tasks,
-      { id: uuidv4(), isCompleted: false, taskName: newTask },
-    ]);
+    const createTask = await axios.post('http://localhost:3001/todo', {
+      newTask,
+    });
+
+    setTasks(createTask.data);
     setNewTask('');
   };
 
@@ -47,6 +49,14 @@ export function Task() {
 
     setTasks(tasksWithoutTaskOne);
   };
+
+  useEffect(() => {
+    const getTodos = async () => {
+     const todos = await axios.get('http://localhost:3001/todos');
+     setTasks(todos.data) 
+    };
+    getTodos()
+  }, []);
 
   return (
     <>
