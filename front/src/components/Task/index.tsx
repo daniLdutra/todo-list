@@ -29,22 +29,15 @@ export function Task() {
     setNewTask(event.target.value);
   };
 
-  const handleTaskCompletion = ({ id }: ITask) => {
-    const taskCompleted = tasks.map((task) => {
-      if (task.id === id) {
-        return {
-          ...task,
-          isCompleted: !task.isCompleted,
-        };
-      }
-      return task;
-    });
-    setTasks(taskCompleted);
+  const handleTaskCompletion = async ({ id }: ITask) => {
+    const taskCompleted =  await axios.put(`http://localhost:3001/todo/${id}`)
+    
+    setTasks(taskCompleted.data);
   };
 
   const deleteTask = async ({ id }: ITask) => {
     const tasksWithoutTaskOne = await axios.delete(`http://localhost:3001/todo/${id}`);
-    
+
     setTasks(tasksWithoutTaskOne.data);
   };
 

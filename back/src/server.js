@@ -20,10 +20,26 @@ app.post('/todo', (req, res) => {
   return res.status(200).json(todos);
 });
 
+app.put('/todo/:id', (req, res) => {
+  const { id } = req.params;
+
+  todos = todos.map((task) => {
+    if (task.id === id) {
+      return {
+        ...task,
+        isCompleted: !task.isCompleted,
+      };
+    }
+    return task;
+  });
+
+  res.json(todos);
+});
+
 app.delete('/todo/:id', (req, res) => {
   const { id } = req.params;
   todos = todos.filter((task) => task.id !== id);
-  return res.json(todos)
+  return res.json(todos);
 });
 
 app.listen(3001, () => {
